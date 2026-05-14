@@ -88,8 +88,30 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public Map<String, Double> monthlySummary(Date date) {
-        return Map.of();
+    public Map<String, Double> monthlySummary(int month, int year) {
+        List<Transaction> transactions = transactionService.getAllTransaction();
+        double income = transactions.stream()
+                .filter(t -> t.getTransactionDate() != null)
+                .filter(t -> t.getTransactionDate().getMonthValue() == month)
+                .filter(t -> t.getTransactionDate().getYear() == year)
+                .filter(t-> t.getType().equalsIgnoreCase("income"))
+                .mapToDouble(Transaction::getAmount)
+                .sum();
+
+        double expense = transactions.stream()
+                .filter(t -> t.getTransactionDate() != null)
+                .filter(t -> t.getTransactionDate().getMonthValue() == month)
+                .filter(t -> t.getTransactionDate().getYear() == year)
+                .filter(t-> t.getType().equalsIgnoreCase("expense"))
+                .mapToDouble(Transaction::getAmount)
+                .sum();
+
+        double balance = income - expense;
+        Map<String, Double> summary = new HashMap<>();
+        summary.put("Income", income);
+        summary.put("Expense", expense);
+        summary.put("Balance", balance   );
+        return summary;
     }
 
     @Override
