@@ -2,15 +2,16 @@ package com.example.fintrack_api.service;
 
 import com.example.fintrack_api.entity.Transaction;
 import com.example.fintrack_api.repository.TransactionRepository;
+import com.example.fintrack_api.service.service_interface.TransactionService;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class TransactionService {
+public class TransactionServiceImpl implements TransactionService {
     TransactionRepository repository;
 
-    public TransactionService(TransactionRepository repository) {
+    public TransactionServiceImpl(TransactionRepository repository) {
         this.repository = repository;
     }
 
